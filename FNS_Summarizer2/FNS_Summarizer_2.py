@@ -99,8 +99,11 @@ for sent in original_sentence_list:
     # Join clean words to build clean sentence
     clean_sent = ' '.join([sent_words[i] for i in range(len(sent_words))])  
 
-    # Append sentece 
-    sentence_list.append(clean_sent)  
+    if len(word_tokenize(clean_sent)) > 1:
+    	# Append sentece 
+    	sentence_list.append(clean_sent)  
+    else:
+    	non_nar_index.append(i)
         
   i+=1
 
