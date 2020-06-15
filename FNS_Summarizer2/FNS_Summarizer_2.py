@@ -53,7 +53,7 @@ raw_report = f.read()
 clean_report = re.sub('\n', ' ', raw_report)
 #Original sentence list for the final output Summary   
 original_sentence_list = sent_tokenize(clean_report)
-ner_report = ' '.join([original_sentence_list[i]] for i in range(50))
+ner_report = ' '.join([original_sentence_list[i] for i in range(50)])
 #print(len(original_sentence_list))
 
 """Non Narrative Sentences Cleaning"""
