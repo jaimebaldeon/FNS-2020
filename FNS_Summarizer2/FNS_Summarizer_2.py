@@ -21,6 +21,7 @@ import ntpath
 import time
 import meaningcloud
 #pip install MeaningCloud-python
+np.seterr(divide='ignore', invalid='ignore')
 
 """	CHECK ARGUMENTS	"""
 
@@ -52,6 +53,7 @@ raw_report = f.read()
 clean_report = re.sub('\n', ' ', raw_report)
 #Original sentence list for the final output Summary   
 original_sentence_list = sent_tokenize(clean_report)
+ner_report = ' '.join([original_sentence_list[i]] for i in range(50))
 #print(len(original_sentence_list))
 
 """Non Narrative Sentences Cleaning"""
@@ -150,9 +152,8 @@ for sent in sentence_list:
 
 license_key = 'b59424e48a94e5061bef29cbd29bdacd'
 
-length = 300000
 # We are going to make a request to the Topics Extraction API
-topics_response = meaningcloud.TopicsResponse(meaningcloud.TopicsRequest(license_key, txt=clean_report[:length], lang='en',topicType='e').sendReq())
+topics_response = meaningcloud.TopicsResponse(meaningcloud.TopicsRequest(license_key, txt=ner_report, lang='en',topicType='e').sendReq())
 
 # If there are no errors in the request, we print the output
 if topics_response.isSuccessful():
