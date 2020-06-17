@@ -55,6 +55,7 @@ def remove_stopwords(words_list):
 summary_idx = 0
 for clean_sentences in summaries_clean_sentences:
   # remove stopwords from the sentences
+  # ??????????? [remove_stopwords(sentence.split()) for sentence in clean_sentences if remove_stopwords(sentence.split()) > 0]
   clean_sentences = [remove_stopwords(sentence.split()) for sentence in clean_sentences]
   summaries_clean_sentences[summary_idx] = clean_sentences
   summary_idx+=1

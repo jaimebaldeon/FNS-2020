@@ -31,7 +31,7 @@ for file_n in file_names[1:]:
 	print("Reading '{0}'...".format(file_n))
 	with codecs.open(file_n, 'r', 'utf-8') as file:
 		corpus += file.read()
-		file_data = file.read()
+		#file_data = file.read()
 	print("Corpus is now '{0}' characters long".format(len(corpus)))
 print('Done!')
 

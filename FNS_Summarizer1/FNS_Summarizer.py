@@ -50,7 +50,7 @@ raw_report = f.read()
 clean_report = re.sub('\n', ' ', raw_report)
 #Original sentence list for the final output Summary   
 original_sentence_list = sent_tokenize(clean_report)
-print(len(original_sentence_list))
+#print(len(original_sentence_list))
 
 """Non Narrative Sentences Cleaning"""
 
@@ -95,8 +95,11 @@ for sent in original_sentence_list:
     # Join clean words to build clean sentence
     clean_sent = ' '.join([sent_words[i] for i in range(len(sent_words))])  
 
-    # Append sentece 
-    sentence_list.append(clean_sent)  
+    if len(word_tokenize(clean_sent)) > 1:
+    	# Append sentece 
+    	sentence_list.append(clean_sent)  
+    else:
+    	non_nar_index.append(i)   
         
   i+=1
 
@@ -135,13 +138,12 @@ for sent in sentence_list:
     vector = np.zeros((300,))  
   sentence_vectors.append(vector)
 
-print("Number of vectors --->   ", len(sentence_vectors))
+#print("Number of vectors --->   ", len(sentence_vectors))
+
 
 """# **FEATURE EXTRACTION**"""
 
-print("Calculating Feature Matrix...")
-
-
+#print("Calculating Feature Matrix...")
 # Define Keywords list (extracted manually from previous analysis made in the summary corpus)
 
 keywords = ['financial statement',
