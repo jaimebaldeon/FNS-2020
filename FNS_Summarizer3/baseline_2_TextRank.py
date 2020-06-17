@@ -65,6 +65,8 @@ i=0
 non_nar_index = []
 for sent in original_sentence_list:
   
+  if len(sentence_list) == 150:
+    break
   sent_words = word_tokenize(sent)
   sent_tag = nltk.pos_tag(sent_words)
   tags = [tag[1] for tag in sent_tag]
@@ -104,6 +106,9 @@ for sent in original_sentence_list:
 for i in range(len(non_nar_index)):
   #remove non narrtaive sentences from original sentence list
   removed = original_sentence_list.pop(non_nar_index[i] - i) 
+
+original_sentence_list = original_sentence_list[:150]
+print(len(original_sentence_list), len(sentence_list))
 
 # Define Keywords list (extracted manually from previous analysis made in the summary corpus)
 '''keywords = ['financial statement',
@@ -145,7 +150,7 @@ with open('word2vec.300d.GoldSum.pickle', 'rb') as fp:
       word_embeddings = pickle.load(fp) 
 
 '''
-f = open('glove.6B.100d.txt', encoding='utf-8')
+f = open('glove.6B.300d.txt', encoding='utf-8')
 for line in f:
     values = line.split()
     word = values[0]
@@ -228,7 +233,7 @@ for i in range(len(ranked_sentences)):
     removed += 1
     words_count -= len(ranked_sentences[i][1].split())
 print("Summary length:    ", len(summary.split()))
-#print(summary)
+print('Sentences used:    ', len(summarized_sentences))
 
 idx = f_name.find('.txt')
 f_out_name = f_name[:idx] + '_summary' + f_name[idx:]
