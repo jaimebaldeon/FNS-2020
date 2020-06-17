@@ -96,7 +96,7 @@ for sent in original_sentence_list:
     clean_sent = ' '.join([sent_words[i] for i in range(len(sent_words))])  
 
     if len(word_tokenize(clean_sent)) > 1:
-    	# Append sentece 
+    	# Append non empty sentece 
     	sentence_list.append(clean_sent)  
     else:
     	non_nar_index.append(i)   
