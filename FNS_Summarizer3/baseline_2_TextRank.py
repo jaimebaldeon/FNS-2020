@@ -181,7 +181,7 @@ for i in range(len(sentence_list)):
     if i != j:
       sim_mat[i][j] = cosine_similarity(sentence_vectors[i].reshape(1,300), sentence_vectors[j].reshape(1,300))[0,0]
   if i % 50 == 0:
-    print("Sentence", i, "out of", len(sentence_list))
+    #print("Sentence", i, "out of", len(sentence_list))
 
 #print("Building Textrank scores...")
 
