@@ -205,7 +205,7 @@ def keywords_scores(sentences):
 def gold_summaries_similarity_scores(sentence_vectors):
   scores = []
   #Load gold summaries vector
-  with open('gold_summaries_300D_vectors.pickle', 'rb') as fp:
+  with open('gold_summaries_300D_vectors_narrative.pickle', 'rb') as fp:
       summary_vector, summary_vectors = pickle.load(fp)  
   # SImilarity between each sentence and gold summaries
   for sent in range(len(sentence_vectors)):    

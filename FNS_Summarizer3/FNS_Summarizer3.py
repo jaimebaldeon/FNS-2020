@@ -18,6 +18,8 @@ import networkx as nx
 import pickle
 import sys
 import time
+import os
+import ntpath
 
 """ CHECK ARGUMENTS """
 
@@ -41,8 +43,8 @@ init_time = time.perf_counter()
 #Save output path
 new_dir_path = sys.argv[2]
 
-f_name = sys.argv[1]
-f = open(f_name, "r")
+f_name_path = sys.argv[1]
+f = open(f_name_path, "r")
 raw_report = f.read()
 
 #Next line cleaning for sentence tokenization
@@ -234,15 +236,21 @@ for i in range(len(ranked_sentences)):
     removed += 1
     words_count -= len(ranked_sentences[i][1].split())
 #print("Summary length:    ", len(summary.split()))
-print('Sentences used:    ', len(summarized_sentences))
+#print('Sentences used:    ', len(summarized_sentences))
 
+#Upload file into output directory 
+
+#Get report name
+f_name = ntpath.basename(f_name_path)
 idx = f_name.find('.txt')
+#Output summary formatted name: 1234_summary.txt
 f_out_name = f_name[:idx] + '_summary' + f_name[idx:]
-f= open(f_out_name,"w+")
-f.write(summary)
+#Set destination path and save summary
+sum_path = os.path.join(new_dir_path, f_out_name)
+f= open(sum_path,"wb")
+utf8_summary= summary.encode('utf8')
+f.write(utf8_summary)
 f.close()
-print("Created file: --->  %s" % f_out_name)
-
 
 final_time = time.perf_counter()
-#print(f"Summarization time:   {final_time - init_time:0.4f} seconds")
+print(f"Created file: --->  %s  Summarization time:   {final_time - init_time:0.4f} seconds" % f_out_name)
