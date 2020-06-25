@@ -37,6 +37,17 @@ summaries_clean_sentences = []  #processed summaries sentence list
 
 for summary_sentences in summaries_sentence_list:
 
+  # Narrative screening
+
+  s_words = [s.split() for s in summary_sentences]
+  for i in range(len(summary_sentences)):
+    tags = [tag[1] for tag in nltk.pos_tag(s_words[i])]
+    narrative = ['V' == elem[0] for elem in tags]
+    # non-narrative sentences are excluded
+    if not any(narrative):
+    	#print('Found non Narrative...	', summary_sentences[i])
+    	summary_sentences[i] = ''    	
+    
   # Clean sentences in each summary
 
   clean_sentences = [re.sub("'m", 'million', s) for s in summary_sentences]
@@ -55,7 +66,6 @@ def remove_stopwords(words_list):
 summary_idx = 0
 for clean_sentences in summaries_clean_sentences:
   # remove stopwords from the sentences
-  # ??????????? [remove_stopwords(sentence.split()) for sentence in clean_sentences if remove_stopwords(sentence.split()) > 0]
   clean_sentences = [remove_stopwords(sentence.split()) for sentence in clean_sentences]
   summaries_clean_sentences[summary_idx] = clean_sentences
   summary_idx+=1
@@ -103,6 +113,6 @@ for sentence_vectors in summaries_sentence_vectors:
 summary_vector = sum(summary_vectors)/(len(summary_vectors))
 print(summary_vector)
 
-pickle_out = open("gold_summaries_300D_vectors.pickle","wb")
+pickle_out = open("gold_summaries_300D_vectors_narrative.pickle","wb")
 pickle.dump((summary_vector, summary_vectors), pickle_out)
 pickle_out.close()

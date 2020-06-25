@@ -61,11 +61,12 @@ pos_tagged_sentence_list = []
 # Analyse each sentence
 # Non narrative sentences will be excluded 
 
+sentences_window = 150
 i=0
 non_nar_index = []
 for sent in original_sentence_list:
   
-  if len(sentence_list) == 150:
+  if len(sentence_list) == sentences_window:
     break
   sent_words = word_tokenize(sent)
   sent_tag = nltk.pos_tag(sent_words)
@@ -107,8 +108,8 @@ for i in range(len(non_nar_index)):
   #remove non narrtaive sentences from original sentence list
   removed = original_sentence_list.pop(non_nar_index[i] - i) 
 
-original_sentence_list = original_sentence_list[:150]
-print(len(original_sentence_list), len(sentence_list))
+original_sentence_list = original_sentence_list[:sentences_window]
+#print(len(original_sentence_list), len(sentence_list))
 
 # Define Keywords list (extracted manually from previous analysis made in the summary corpus)
 '''keywords = ['financial statement',
@@ -173,14 +174,14 @@ for sent in sentence_list:
 
 # similarity matrix
 
-print("Creating similarity matrix...")
+#print("Creating similarity matrix...")
 sim_mat = np.zeros([len(sentence_list), len(sentence_list)])
 
 for i in range(len(sentence_list)):
   for j in range(len(sentence_list)):
     if i != j:
       sim_mat[i][j] = cosine_similarity(sentence_vectors[i].reshape(1,300), sentence_vectors[j].reshape(1,300))[0,0]
-  if i % 50 == 0:
+  #if i % 50 == 0:
     #print("Sentence", i, "out of", len(sentence_list))
 
 #print("Building Textrank scores...")
@@ -232,7 +233,7 @@ for i in range(len(ranked_sentences)):
     summarized_sentences.pop(i-removed)
     removed += 1
     words_count -= len(ranked_sentences[i][1].split())
-print("Summary length:    ", len(summary.split()))
+#print("Summary length:    ", len(summary.split()))
 print('Sentences used:    ', len(summarized_sentences))
 
 idx = f_name.find('.txt')
@@ -244,4 +245,4 @@ print("Created file: --->  %s" % f_out_name)
 
 
 final_time = time.perf_counter()
-print(f"Summarization time:   {final_time - init_time:0.4f} seconds")
+#print(f"Summarization time:   {final_time - init_time:0.4f} seconds")
