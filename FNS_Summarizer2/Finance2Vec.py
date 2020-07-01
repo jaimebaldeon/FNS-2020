@@ -9,30 +9,29 @@ from collections import Counter
 import nltk
 from nltk.corpus import wordnet
 from nltk.stem import WordNetLemmatizer
-#nltk.download('averaged_perceptron_tagger')
-#nltk.download('wordnet')
+
 
 #Load and extract all Gold Summaries 
 
 zip_name = 'gold_summaries.zip'
 with ZipFile(zip_name, 'r') as zip: 
-	file_names = zip.namelist()
-	print('Extracting all the files now...') 
-	zip.extractall() 
-	print('Done!\n') 
+    file_names = zip.namelist()
+    print('Extracting all the files now...') 
+    zip.extractall() 
+    print('Done!\n') 
 
 #Load  all summaries into the corpus
 corpus = u""
 
 print('Uploading raw data...')
 
-file_data = u""	#unicode string
+file_data = u"" #unicode string
 for file_n in file_names[1:]:
-	print("Reading '{0}'...".format(file_n))
-	with codecs.open(file_n, 'r', 'utf-8') as file:
-		corpus += file.read()
-		file_data = file.read()
-	print("Corpus is now '{0}' characters long".format(len(corpus)))
+    #print("Reading '{0}'...".format(file_n))
+    with codecs.open(file_n, 'r', 'utf-8') as file:
+        corpus += file.read()
+        #file_data = file.read()
+    #print("Corpus is now '{0}' characters long".format(len(corpus)))
 print('Done!')
 
 
@@ -186,8 +185,8 @@ class SkipGram(nn.Module):
 # check if GPU is available
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
-embedding_dim = 300 # you can change, if you want
-
+embedding_dim = 300 
+print("Vocab size: {}".format(len(vocab_to_int)))
 model = SkipGram(len(vocab_to_int), embedding_dim).to(device)
 criterion = nn.NLLLoss()
 optimizer = optim.Adam(model.parameters(), lr=0.003)

@@ -13,22 +13,22 @@ import pickle
 #Load and extract all Gold Summaries 
 
 with ZipFile('gold_summaries.zip', 'r') as zip: 
-	file_names = zip.namelist()
-	print('Extracting all the files now...') 
-	zip.extractall() 
-	print('Done!\n') 
+  file_names = zip.namelist()
+  print('Extracting all the files now...') 
+  zip.extractall() 
+  print('Done!\n') 
 
 #Load  all summaries into the corpus
 summaries_sentence_list = []
 
 print('Uploading raw data...')
 for file_n in file_names[1:]:
-	with open(file_n, 'r') as file:
-		file_data = file.read()
-		file_data = re.sub('\n', ' ', file_data)
-		sents = sent_tokenize(file_data)
-		if len(sents) != 0:
-			summaries_sentence_list.append(sents)
+  with open(file_n, 'r') as file:
+    file_data = file.read()
+    file_data = re.sub('\n', ' ', file_data)
+    sents = sent_tokenize(file_data)
+    if len(sents) != 0:
+      summaries_sentence_list.append(sents)
 print('Done!')
 
 """**Preprocessing**"""
@@ -37,6 +37,17 @@ summaries_clean_sentences = []  #processed summaries sentence list
 
 for summary_sentences in summaries_sentence_list:
 
+  # Narrative screening
+
+  s_words = [s.split() for s in summary_sentences]
+  for i in range(len(summary_sentences)):
+    tags = [tag[1] for tag in nltk.pos_tag(s_words[i])]
+    narrative = ['V' == elem[0] for elem in tags]
+    # non-narrative sentences are excluded
+    if not any(narrative):
+      #print('Found non Narrative...  ', summary_sentences[i])
+      summary_sentences[i] = ''     
+    
   # Clean sentences in each summary
 
   clean_sentences = [re.sub("'m", 'million', s) for s in summary_sentences]
@@ -102,6 +113,6 @@ for sentence_vectors in summaries_sentence_vectors:
 summary_vector = sum(summary_vectors)/(len(summary_vectors))
 print(summary_vector)
 
-pickle_out = open("gold_summaries_300D_vectors.pickle","wb")
+pickle_out = open("gold_summaries_300D_vectors_narrative.pickle","wb")
 pickle.dump((summary_vector, summary_vectors), pickle_out)
 pickle_out.close()
