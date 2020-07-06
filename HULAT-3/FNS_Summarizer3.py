@@ -58,7 +58,6 @@ original_sentence_list = sent_tokenize(clean_report)
 stopwords = list(STOP_WORDS)
 sentence_list = []  #processed sentence list
 pos_tagged_sentence_list = []
-#print(len(original_sentence_list))
 
 # Analyse each sentence
 # Non narrative sentences will be excluded 
@@ -111,39 +110,8 @@ for i in range(len(non_nar_index)):
   removed = original_sentence_list.pop(non_nar_index[i] - i) 
 
 original_sentence_list = original_sentence_list[:sentences_window]
-#print(len(original_sentence_list), len(sentence_list))
-
-# Define Keywords list (extracted manually from previous analysis made in the summary corpus)
-'''keywords = ['financial statement',
-             'annual report',
-             'growth',
-             'audit committee',
-             'executive director',
-             'chairman',
-             'stock',
-             'shareholder',
-             'stockholder',
-             'dividend',
-             'share',
-             'acquisition',
-             'year end',
-             'this year',
-             'annual report account',
-             'board of directors',
-             'million',
-             'account',
-             'production',
-             'revenue',
-             'company',
-             'business',
-             'plc',
-             'profit']'''
 
 # **TEXTRANK**"""
-
-# download pretrained GloVe word embeddings
-#! wget http://nlp.stanford.edu/data/glove.6B.zip
-#! unzip glove*.zip
 
 # Extract word vectors
 word_embeddings = {}
@@ -152,15 +120,6 @@ word_embeddings = {}
 with open('fin2vec_300d.pickle', 'rb') as fp:
       word_embeddings = pickle.load(fp) 
 
-'''
-f = open('glove.6B.300d.txt', encoding='utf-8')
-for line in f:
-    values = line.split()
-    word = values[0]
-    coefs = np.asarray(values[1:], dtype='float32')
-    word_embeddings[word] = coefs
-f.close()
-'''
 #print("Translating sentences into vectors...")
 
 sentence_vectors = []
@@ -174,7 +133,7 @@ for sent in sentence_list:
 
 #print("Number of vectors --->   ", len(sentence_vectors))
 
-# similarity matrix
+# Build similarity matrix
 
 #print("Creating similarity matrix...")
 sim_mat = np.zeros([len(sentence_list), len(sentence_list)])
@@ -183,31 +142,13 @@ for i in range(len(sentence_list)):
   for j in range(len(sentence_list)):
     if i != j:
       sim_mat[i][j] = cosine_similarity(sentence_vectors[i].reshape(1,300), sentence_vectors[j].reshape(1,300))[0,0]
-  #if i % 50 == 0:
-    #print("Sentence", i, "out of", len(sentence_list))
 
 #print("Building Textrank scores...")
 
 nx_graph = nx.from_numpy_array(sim_mat)
 text_rank_scores = nx.pagerank(nx_graph)
 
-
-
-"""# **FEATURES SCORES**"""
-
-#print("Calculating Feature Matrix...")
-
-# Keywords Score function
-'''def keywords_scores(sentences): 
-  scores = []
-  for sentence in sentences:
-    kws_in_sent = 0
-    for i in range(len(keywords)):
-      if keywords[i] in sentence:
-        kws_in_sent += 1
-    scores.append(kws_in_sent/len(word_tokenize(sentence)))
-  return scores'''  
-
+# RANK SENTENCES
 
 scores = [text_rank_scores[i] for i in range(len(sentence_list))]
 
@@ -221,20 +162,19 @@ summary = ''
 summarized_sentences = []
 words_count = 0
 removed = 0
+
 for i in range(len(ranked_sentences)):
-  #print("Sent           --> ", i)
   summarized_sentences.append(ranked_sentences[i][1])  
   words_count += len(ranked_sentences[i][1].split())
   if words_count > 1000:
     # Only if the summary is between 900 to 1000 words it will end adding senteces
     if (words_count - len(ranked_sentences[i][1].split())) > 900:
-      #print(words_count - len(ranked_sentences[i][1].split()))
       summary = '\n'.join(summarized_sentences[:i-1])
       break
-    #print(len(summarized_sentences), "  Frase --> ", i)
     summarized_sentences.pop(i-removed)
     removed += 1
     words_count -= len(ranked_sentences[i][1].split())
+
 #print("Summary length:    ", len(summary.split()))
 #print('Sentences used:    ', len(summarized_sentences))
 

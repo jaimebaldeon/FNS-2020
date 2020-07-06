@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from zipfile import ZipFile 
 import nltk
-nltk.download('punkt')
+#nltk.download('punkt')
 from nltk.tokenize import sent_tokenize, word_tokenize
 import numpy as np
 import re
@@ -73,14 +73,8 @@ for clean_sentences in summaries_clean_sentences:
 """**Word Embeddings**"""
 
 # Extract word vectors
+
 word_embeddings = {}
-'''f = open('glove.6B.100d.txt', encoding='utf-8')
-for line in f:
-    values = line.split()
-    word = values[0]
-    coefs = np.asarray(values[1:], dtype='float32')
-    word_embeddings[word] = coefs
-f.close()'''
 
 print("Loading word embeddings...")
 with open('fin2vec_300d.pickle', 'rb') as fp:

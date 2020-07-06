@@ -50,7 +50,6 @@ raw_report = f.read()
 clean_report = re.sub('\n', ' ', raw_report)
 #Original sentence list for the final output Summary   
 original_sentence_list = sent_tokenize(clean_report)
-#print(len(original_sentence_list))
 
 """Non Narrative Sentences Cleaning"""
 
@@ -107,8 +106,6 @@ for i in range(len(non_nar_index)):
   #remove non narrative sentences from original sentence list
   removed = original_sentence_list.pop(non_nar_index[i] - i) 
 
-#print("Sentences length --->   ", len(sentence_list))
-#print('\n-----\n'.join(sent for sent in sentence_list))
 # Extract word vectors
 word_embeddings = {}
 
@@ -118,16 +115,6 @@ with open('fin2vec_300d.pickle', 'rb') as fp:
 
 #print("Translating sentences into vectors...")
 
-# Extract word vectors
-'''
-f = open('glove.6B.100d.txt', encoding='utf-8')
-for line in f:
-    values = line.split()
-    word = values[0]
-    coefs = np.asarray(values[1:], dtype='float32')
-    word_embeddings[word] = coefs
-f.close()
-'''
 
 sentence_vectors = []
 for sent in sentence_list:
@@ -138,12 +125,9 @@ for sent in sentence_list:
     vector = np.zeros((300,))  
   sentence_vectors.append(vector)
 
-#print("Number of vectors --->   ", len(sentence_vectors))
-
 
 """# **FEATURE EXTRACTION**"""
 
-#print("Calculating Feature Matrix...")
 # Define Keywords list (extracted manually from previous analysis made in the summary corpus)
 
 keywords = ['financial statement',
@@ -228,21 +212,28 @@ def position_scores(sentences):
 """**MODELLING**"""
 
 featureMatrix = []	#scores matrix
+
 # Append feature scores
+
 featureMatrix.append(keywords_scores(sentence_list))
 featureMatrix.append(position_scores(sentence_list))
 featureMatrix.append(gold_summaries_similarity_scores(sentence_vectors))
+
 # Feature Matrix normalization (scores between 0 and 1)
+
 featureMat = np.zeros((len(sentence_list), len(featureMatrix)))
 for i in range(len(featureMatrix)) :
     for j in range(len(sentence_list)):
         featureMat[j][i] = featureMatrix[i][j]	#transpose matrix
 print(featureMat.max(axis=0))
 featureMat_normed = featureMat / featureMat.max(axis=0)
+
 # Sum up feature scores to get the final score for each sentence
+
 scores = [sum(featureMat_normed[i]) for i in range(len(sentence_list))]
 
 #Rank original sentences to be extracted 
+
 ranked_sentences = sorted(((scores[i],s) for i,s in enumerate(original_sentence_list)), reverse=True)
 
 
