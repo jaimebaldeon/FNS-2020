@@ -238,7 +238,7 @@ for i in range(len(int_to_vocab)):
     word_embeddings[word] = coefs
 
 import pickle
-pickle_out = open("word2vec.300d.GoldSum.pickle", "wb")
+pickle_out = open("fin2vec_300d.pickle", "wb")
 pickle.dump(word_embeddings, pickle_out)
 pickle_out.close()
 

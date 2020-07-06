@@ -116,7 +116,7 @@ for i in range(len(non_nar_index)):
 word_embeddings = {}
 
 #print("Loading word embeddings...")
-with open('word2vec.300d.GoldSum.pickle', 'rb') as fp:
+with open('fin2vec_300d.pickle', 'rb') as fp:
       word_embeddings = pickle.load(fp) 
 
 #print("Translating sentences into vectors...")
@@ -253,7 +253,7 @@ def keywords_scores(sentences):
 def gold_summaries_similarity_scores(sentence_vectors):
   scores = []
   #Load gold summaries vector
-  with open('gold_summaries_300D_vectors_narrative.pickle', 'rb') as fp:
+  with open('goldStandard_vector.pickle', 'rb') as fp:
       summary_vector, summary_vectors = pickle.load(fp)  
   # SImilarity between each sentence and gold summaries
   for sent in range(len(sentence_vectors)):    

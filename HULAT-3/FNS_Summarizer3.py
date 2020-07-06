@@ -149,7 +149,7 @@ original_sentence_list = original_sentence_list[:sentences_window]
 word_embeddings = {}
 
 #print("Loading word embeddings...")
-with open('word2vec.300d.GoldSum.pickle', 'rb') as fp:
+with open('fin2vec_300d.pickle', 'rb') as fp:
       word_embeddings = pickle.load(fp) 
 
 '''

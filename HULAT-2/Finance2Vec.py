@@ -15,23 +15,21 @@ from nltk.stem import WordNetLemmatizer
 
 zip_name = 'gold_summaries.zip'
 with ZipFile(zip_name, 'r') as zip: 
-    file_names = zip.namelist()
-    print('Extracting all the files now...') 
-    zip.extractall() 
-    print('Done!\n') 
+	file_names = zip.namelist()
+	print('Extracting all the files now...') 
+	zip.extractall() 
+	print('Done!\n') 
 
 #Load  all summaries into the corpus
 corpus = u""
 
 print('Uploading raw data...')
 
-file_data = u"" #unicode string
 for file_n in file_names[1:]:
-    #print("Reading '{0}'...".format(file_n))
-    with codecs.open(file_n, 'r', 'utf-8') as file:
-        corpus += file.read()
-        #file_data = file.read()
-    #print("Corpus is now '{0}' characters long".format(len(corpus)))
+	#print("Reading '{0}'...".format(file_n))
+	with codecs.open(file_n, 'r', 'utf-8') as file:
+		corpus += file.read()
+	#print("Corpus is now '{0}' characters long".format(len(corpus)))
 print('Done!')
 
 
@@ -240,7 +238,7 @@ for i in range(len(int_to_vocab)):
     word_embeddings[word] = coefs
 
 import pickle
-pickle_out = open("word2vec.300d.GoldSum.pickle", "wb")
+pickle_out = open("fin2vec_300d.pickle", "wb")
 pickle.dump(word_embeddings, pickle_out)
 pickle_out.close()
 

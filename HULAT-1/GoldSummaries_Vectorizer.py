@@ -83,7 +83,7 @@ for line in f:
 f.close()'''
 
 print("Loading word embeddings...")
-with open('word2vec.300d.GoldSum.pickle', 'rb') as fp:
+with open('fin2vec_300d.pickle', 'rb') as fp:
       word_embeddings = pickle.load(fp) 
 
 summaries_sentence_vectors = []
@@ -113,6 +113,6 @@ for sentence_vectors in summaries_sentence_vectors:
 summary_vector = sum(summary_vectors)/(len(summary_vectors))
 print(summary_vector)
 
-pickle_out = open("gold_summaries_300D_vectors.pickle","wb")
+pickle_out = open("goldStandard_vector.pickle","wb")
 pickle.dump((summary_vector, summary_vectors), pickle_out)
 pickle_out.close()
