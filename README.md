@@ -1,4 +1,4 @@
-# -FNS-2020
+# FNS-2020
 **Introduction**
 
  The volume of available financial information is increasing sharply and therefore the study of NLP methods that automatically summarise content has grown rapidly into a major research area.
