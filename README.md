@@ -1,4 +1,8 @@
 # FNS-2020
+**Abstract**
+
+This repository gathers the systems proposed by HULAT research group from Universidad Carlos III de Madrid (UC3M) and MeaningCloud (MC) company to solve the FNS 2020 Shared Task on summarizing financial reports. We present a narrative extractive approach that implements a statistical model comprised of different features that measure the relevance of the sentences using a combination of statistical and machine learning methods. The key to the model’s performance is its accurate representation of the text, since the word embeddings used by the model have been trained with the summaries of the training dataset and therefore capture the most salient information from the reports. 
+
 **Introduction**
 
  The volume of available financial information is increasing sharply and therefore the study of NLP methods that automatically summarise content has grown rapidly into a major research area.
