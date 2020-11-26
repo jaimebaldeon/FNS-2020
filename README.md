@@ -5,7 +5,7 @@ This repository gathers the systems proposed by HULAT research group from Univer
 
 **Introduction**
 
- The volume of available financial information is increasing sharply and therefore the study of NLP methods that automatically summarise content has grown rapidly into a major research area.
+The volume of available financial information is increasing sharply and therefore the study of NLP methods that automatically summarise content has grown rapidly into a major research area.
 
 The Financial Narrative Summarisation (FNS 2020) aims to demonstrate the value and challenges of applying automatic text summarisation to financial text written in English, usually referred to as financial narrative disclosures. The task dataset has been extracted from UK annual reports published in PDF file format.
 
